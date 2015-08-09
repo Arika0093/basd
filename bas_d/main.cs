@@ -161,9 +161,14 @@ namespace bas_d
 						continue;
 					}
 					// Move File
-					File.Move(BmxInfo.Path, MoveDir + "/" + Path.GetFileName(BmxInfo.Path));
-					Console.WriteLine("Move: \"{0}\" -> \"{1}\"",
-						Path.GetFileName(BmxInfo.Path), Path.GetFileName(MoveDir));
+					if(!File.Exists(BmxInfo.Path)) {
+						File.Move(BmxInfo.Path, MoveDir + "/" + Path.GetFileName(BmxInfo.Path));
+						Console.WriteLine("Move: \"{0}\" -> \"{1}\"",
+							Path.GetFileName(BmxInfo.Path), Path.GetFileName(MoveDir));
+					}
+					else {
+						Console.WriteLine("Warning: \"{0}\" is already exist.", Path.GetFileName(BmxInfo.Path));
+					}
 				}
 				else {
 					// Error

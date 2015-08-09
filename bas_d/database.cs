@@ -32,10 +32,9 @@ namespace bas_d
 		{
 			// Open Database
 			var Cn = OpenLR2Database();
-			Cn.Open();
 			// Command Create
 			var Cmd = Cn.CreateCommand();
-			Cmd.CommandText = "SELECT path FROM song WHERE title LIKE \'" + SongTitle + "%\'";
+			Cmd.CommandText = "SELECT path FROM song WHERE title LIKE \'" + SongTitle + "\'";
 			// Read
 			var reader = Cmd.ExecuteReader();
 			if(reader == null) {
@@ -52,6 +51,7 @@ namespace bas_d
 				var path = sr.ReadToEnd();
 				sr.Close();
 				LR2Handle = new SQLiteConnection("Data Source=" + path);
+				LR2Handle.Open();
 			}
 			return LR2Handle;
 		}
