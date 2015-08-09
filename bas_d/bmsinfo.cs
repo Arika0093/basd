@@ -18,7 +18,7 @@ namespace bas_d
 		{
 			string Short = "";
 			// separate
-			var Strings = Title.Split(new char[] { '(', '[', '{', '-', });
+			var Strings = Title.Split(new char[] { '(', '[', '{', '-', '"'});
 			Short = Strings[0];
 			return Short.Trim();
 		}
