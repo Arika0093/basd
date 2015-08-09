@@ -20,10 +20,6 @@ namespace bas_d
 			// separate
 			var Strings = Title.Split(new char[] { '(', '[', '{', '-', });
 			Short = Strings[0];
-			// add
-			//for(int i = 1; i < Strings.Length - 1; i++) {
-			//	Short += Strings[i];
-			//}
 			return Short.Trim();
 		}
 	}

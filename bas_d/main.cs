@@ -53,6 +53,8 @@ namespace bas_d
 					// Help
 					case "-?":
 					case "/?":
+					case "-h":
+					case "/h":
 					case "-help":
 						Console.WriteLine(HelpMsg);
 						break;
@@ -134,7 +136,7 @@ namespace bas_d
 			// LR2Database Exist Check
 			if(!File.Exists("data/dbpath")) {
 				// Error
-				Console.WriteLine("Error: Unser LR2 Path. use -s option.");
+				Console.WriteLine("Error: Unset LR2 Path. use -s option.");
 				return;
 			}
 
