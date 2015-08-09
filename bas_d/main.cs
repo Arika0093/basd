@@ -78,8 +78,15 @@ namespace bas_d
 					case "-g":
 					case "/g":
 					case "-get":
-						// Get
-						GetBmsFile(NextParamCheck(args, i));
+						// upxxxx Check
+						if(NextParamCheck(args, i).IndexOf("up") == 0) {
+							GetBmsFile("http://absolute.pv.land.to/uploader/src/"
+								+ NextParamCheck(args, i) + ".zip");
+						}
+						else {
+							// Get
+							GetBmsFile(NextParamCheck(args, i));
+						}
 						// End
 						i++;
 						break;
@@ -93,8 +100,13 @@ namespace bas_d
 						i++;
 						break;
 					default:
+						// upxxxx Check
+						if(args[i].IndexOf("up") == 0){
+							GetBmsFile("http://absolute.pv.land.to/uploader/src/" + args[i] + ".zip");
+							break;
+						}
 						// Path Check
-						if(download.IsExistPath(args[i])) {
+						else if(download.IsExistPath(args[i])) {
 							GetBmsFile(args[i]);
 							break;
 						}

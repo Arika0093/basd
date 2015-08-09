@@ -27,14 +27,13 @@ namespace bas_d
 		public static bool IsExistPath(string Url)
 		{
 			HttpWebResponse response = null;
-			var request = (HttpWebRequest)WebRequest.Create(Url);
-			request.Method = "HEAD";
-
 			try
 			{
+				var request = (HttpWebRequest)WebRequest.Create(Url);
+				request.Method = "HEAD";
 				response = (HttpWebResponse)request.GetResponse();
 			}
-			catch (WebException)
+			catch
 			{
 				Console.WriteLine("Error: Path({0}) is not exist.", Url);
 				return false;
