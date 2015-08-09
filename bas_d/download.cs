@@ -14,7 +14,7 @@ namespace bas_d
 	{
 		public static string GetResource(string Url)
 		{
-			string DlPath = "arcive/" + Path.GetFileName(Url);
+			string DlPath = "archive/" + Path.GetFileName(Url);
 			if(!IsExistPath(Url)) {
 				return null;
 			}

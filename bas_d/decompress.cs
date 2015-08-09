@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using System.IO;
 using System.IO.Compression;
+using UnRarDllWraper;
 
 namespace bas_d
 {
@@ -22,14 +24,34 @@ namespace bas_d
 				case ".bme":
 				case ".bml":
 					// Nothing
-					Console.WriteLine("Archive Decompress: No need.");
-					return "arcive/";
+					Console.WriteLine("Archive Extract: No need.");
+					return "archive/";
 				case ".zip":
 					// Zip archive
 					var ZipArc = new ZipArchive(new FileStream(ArcPath, FileMode.Open));
-					ZipArc.ExtractToDirectory("arcive/dcmp/");
-					Console.WriteLine("Archive Decompress: Success(Type: Zip).");
-					return "arcive/dcmp/";
+					ZipArc.ExtractToDirectory("archive/dcmp/");
+					Console.WriteLine("Archive Extract: Success(Type: Zip).");
+					return "archive/dcmp/";
+				case ".rar":
+					// Rar archive
+					// Load Unrar.dll
+					var rarMgr = new UnRarDllMgr();
+					var UnrarPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\bin\\unrar64.dll";
+					if(!rarMgr.LoadModule(UnrarPath)) {
+						// Error Message
+						Console.WriteLine("Error: Can't Load \"Unrar64.dll\"");
+						return null;
+					}
+					// Filelist get
+					var FileLists = rarMgr.GetFileList(ArcPath);
+					// All Extract
+					foreach(var FileData in FileLists) {
+						rarMgr.FileExtractToFolder(ArcPath, FileData.FileNameW, "archive/dcmp");
+					}
+					// Release Unrar.dll
+					rarMgr.UnloadModule();
+					Console.WriteLine("Archive Extract: Success(Type: Rar).");
+					return "archive/dcmp/";
 				default:
 					// Error Message
 					Console.WriteLine("Error: this extension({0}) is not supported.",
