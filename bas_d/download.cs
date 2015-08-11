@@ -12,9 +12,14 @@ namespace bas_d
 {
 	class download
 	{
+		public const string DlDirectory = "score/";
+
 		public static string GetResource(string Url)
 		{
-			string DlPath = "archive/" + Path.GetFileName(Url);
+			string DlPath = DlDirectory + Path.GetFileName(Url);
+			if(File.Exists(DlPath)){
+				return DlPath;
+			}
 			if(!IsExistPath(Url)) {
 				return null;
 			}

@@ -30,13 +30,15 @@ namespace bas_d
 			"    (ex: -s \"D:/LR2beta3/\")" + "\n" +
 			" -g: URLから譜面をダウンロードし、解凍後自動で導入を行います。-gは省略可。" + "\n" +
 			"    (ex: -g \"http://hoge.com/bms/append.zip\")" + "\n" +
+			"    (ex: -g up4615.zip)(この場合.zipを省略しても可)" + "\n" +
 			" -m: 指定されたフォルダに存在する差分を自動で導入します。" + "\n" +
 			"    (ex: -m \"D:/bmsfiles/unflied/\")" + "\n" +
 			"+------------------------------------------------------------------------+" + "\n" +
-			" 注意点: 差分自動導入は完全ではないので、失敗することがあります。" + "\n" +
-			" 　　　  (特に曲名が違う場合は無理です。)" + "\n" +
-			" 　　　  その場合は、お手数ですが手動での導入をお願いします。" + "\n" +
-			" 　　　  また、LR2側で更新をしないと導入が完了しない場合があります。" + "\n" +
+			" 注意点: ・差分自動導入は完全ではないので、失敗することがあります。" + "\n" +
+			" 　　　  　(特に曲名が違う場合は無理です。)" + "\n" +
+			" 　　　  ・導入に失敗した場合scoreフォルダに.bmsファイルが残ります。" + "\n" +
+			" 　　　  　お手数ですが、手動で導入するか削除してください。" + "\n" +
+			" 　　　  ・LR2側で更新をしないと導入が完了しない場合があります。" + "\n" +
 			"+------------------------------------------------------------------------+";
 
 		static void Main(string[] args)
@@ -80,8 +82,14 @@ namespace bas_d
 					case "-get":
 						// upxxxx Check
 						if(NextParamCheck(args, i).IndexOf("up") == 0) {
-							GetBmsFile("http://absolute.pv.land.to/uploader/src/"
-								+ NextParamCheck(args, i) + ".zip");
+							if(NextParamCheck(args, i).IndexOf('.') >= 0) {
+								GetBmsFile("http://absolute.pv.land.to/uploader/src/"
+									+ NextParamCheck(args, i));
+							}
+							else {
+								GetBmsFile("http://absolute.pv.land.to/uploader/src/"
+									+ NextParamCheck(args, i) + ".zip");
+							}
 						}
 						else {
 							// Get
@@ -102,7 +110,13 @@ namespace bas_d
 					default:
 						// upxxxx Check
 						if(args[i].IndexOf("up") == 0){
-							GetBmsFile("http://absolute.pv.land.to/uploader/src/" + args[i] + ".zip");
+							// if include extension
+							if(args[i].IndexOf(".") != -1) {
+								GetBmsFile("http://absolute.pv.land.to/uploader/src/" + args[i]);
+							}
+							else {
+								GetBmsFile("http://absolute.pv.land.to/uploader/src/" + args[i] + ".zip");
+							}
 							break;
 						}
 						// Path Check
@@ -137,6 +151,9 @@ namespace bas_d
 				Console.WriteLine("Error: Decompress error.");
 				return;
 			}
+
+			// Archive Delete
+			File.Delete(DlPath);
 			// Move
 			MoveBmsFile(DcmpDir);
 			return;

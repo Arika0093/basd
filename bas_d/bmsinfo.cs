@@ -13,14 +13,19 @@ namespace bas_d
 		public string Path = ""; 
 		// Bms title
 		public string Title = "";
+		// Bms subtitle
+		public string Subtitle = "";
 		// Bms ShortTitle Get
 		public string GetShortTitle()
 		{
-			string Short = "";
+			// If Sub title exist, return raw title
+			if(Subtitle != "") {
+				return Title;
+			}
 			// separate
-			var Strings = Title.Split(new char[] { '(', '[', '{', '-', '"'});
-			Short = Strings[0];
-			return Short.Trim();
+			var Strings = Title.Split(new string[] { "(", "[", "{", "-", "\""},
+				StringSplitOptions.RemoveEmptyEntries);
+			return Strings[0].Trim();
 		}
 	}
 
@@ -40,7 +45,11 @@ namespace bas_d
 				int TitleSch = TxLine.IndexOf("#TITLE ");
 				if(TitleSch >= 0) {
 					inf.Title = TxLine.Substring(TitleSch + "#TITLE ".Length);
-					break;
+				}
+				// Match check(Sub Title)
+				int SubtitleSch = TxLine.IndexOf("#SUBTITLE ");
+				if(SubtitleSch >= 0) {
+					inf.Subtitle = TxLine.Substring(SubtitleSch + "#SUBTITLE ".Length);
 				}
 			}
 			// close

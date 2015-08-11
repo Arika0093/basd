@@ -34,7 +34,7 @@ namespace bas_d
 			var Cn = OpenLR2Database();
 			// Command Create
 			var Cmd = Cn.CreateCommand();
-			Cmd.CommandText = "SELECT path FROM song WHERE title LIKE \"" + SongTitle + "\"";
+			Cmd.CommandText = "SELECT path FROM song WHERE title = \"" + SongTitle + "\"";
 			// Read
 			var reader = Cmd.ExecuteReader();
 			if(reader == null) {

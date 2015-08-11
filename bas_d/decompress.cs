@@ -15,6 +15,9 @@ namespace bas_d
 {
 	class decompress
 	{
+		// decompress path
+		public const string ExtractPath = "score/";
+
 		// decompress
 		public static string Decompress(string ArcPath)
 		{
@@ -25,13 +28,16 @@ namespace bas_d
 				case ".bml":
 					// Nothing
 					Console.WriteLine("Archive Extract: No need.");
-					return "archive/";
+					// Move File
+					File.Move(ArcPath, ExtractPath + Path.GetFileName(ArcPath));
+					return ExtractPath;
 				case ".zip":
 					// Zip archive
 					var ZipArc = new ZipArchive(new FileStream(ArcPath, FileMode.Open));
-					ZipArc.ExtractToDirectory("archive/dcmp/");
+					ZipArc.ExtractToDirectory(ExtractPath);
 					Console.WriteLine("Archive Extract: Success(Type: Zip).");
-					return "archive/dcmp/";
+					ZipArc.Dispose();
+					return ExtractPath;
 				case ".rar":
 					// Rar archive
 					// Load Unrar.dll
@@ -46,12 +52,13 @@ namespace bas_d
 					var FileLists = rarMgr.GetFileList(ArcPath);
 					// All Extract
 					foreach(var FileData in FileLists) {
-						rarMgr.FileExtractToFolder(ArcPath, FileData.FileNameW, "archive/dcmp");
+						rarMgr.FileExtractToFolder(ArcPath, FileData.FileNameW, ExtractPath);
 					}
+					Console.WriteLine("Archive Extract: Success(Type: Rar).");
 					// Release Unrar.dll
 					rarMgr.UnloadModule();
-					Console.WriteLine("Archive Extract: Success(Type: Rar).");
-					return "archive/dcmp/";
+					rarMgr.CloseArchive();
+					return ExtractPath;
 				default:
 					// Error Message
 					Console.WriteLine("Error: this extension({0}) is not supported.",
