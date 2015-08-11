@@ -18,13 +18,26 @@ namespace bas_d
 		// Bms ShortTitle Get
 		public string GetShortTitle()
 		{
+			// 1st Separated
+			var Separate1st = new string[]{
+					"(", "[", "{", "\"", "【"
+			};
+			// 2nd Separated
+			var Separate2nd = new string[]{
+					"-", "～", "_"
+			};
+			// -----------------------------
 			// If Sub title exist, return raw title
 			if(Subtitle != "") {
 				return Title;
 			}
-			// separate
-			var Strings = Title.Split(new string[] { "(", "[", "{", "-", "\""},
-				StringSplitOptions.RemoveEmptyEntries);
+			// split@1st
+			var Strings = Title.Split(Separate1st, StringSplitOptions.RemoveEmptyEntries);
+			// if Split Failed then
+			if(Strings.Length <= 1) {
+				// split@2nd
+				Strings = Title.Split(Separate2nd, StringSplitOptions.RemoveEmptyEntries);
+			}
 			return Strings[0].Trim();
 		}
 	}
