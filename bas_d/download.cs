@@ -24,6 +24,7 @@ namespace bas_d
 				return null;
 			}
 			var Wc = new WebClient();
+			Console.WriteLine("File Download: Start...");
 			Wc.DownloadFile(Url, DlPath);
 			Console.WriteLine("File Download: Success.");
 			return DlPath;

@@ -19,7 +19,8 @@ namespace bas_d
 		public const string ExtractPath = "score/";
 
 		// decompress
-		public static string Decompress(string ArcPath)
+		// @return value: true(decomp), false(no need), null(error)
+		public static bool? Decompress(string ArcPath)
 		{
 			// check
 			switch(Path.GetExtension(ArcPath)){
@@ -30,14 +31,14 @@ namespace bas_d
 					Console.WriteLine("Archive Extract: No need.");
 					// Move File
 					File.Move(ArcPath, ExtractPath + Path.GetFileName(ArcPath));
-					return ExtractPath;
+					return false;
 				case ".zip":
 					// Zip archive
 					var ZipArc = new ZipArchive(new FileStream(ArcPath, FileMode.Open));
 					ZipArc.ExtractToDirectory(ExtractPath);
 					Console.WriteLine("Archive Extract: Success(Type: Zip).");
 					ZipArc.Dispose();
-					return ExtractPath;
+					return true;
 				case ".rar":
 					// Rar archive
 					// Load Unrar.dll
@@ -58,7 +59,7 @@ namespace bas_d
 					// Release Unrar.dll
 					rarMgr.UnloadModule();
 					rarMgr.CloseArchive();
-					return ExtractPath;
+					return true;
 				default:
 					// Error Message
 					Console.WriteLine("Error: this extension({0}) is not supported.",

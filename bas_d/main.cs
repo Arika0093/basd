@@ -144,18 +144,21 @@ namespace bas_d
 			}
 
 			// Decompress
-			var DcmpDir = decompress.Decompress(DlPath);
+			var DcmpRlt = decompress.Decompress(DlPath);
 			// DirCheck
-			if(DcmpDir == null) {
+			if(DcmpRlt == null) {
 				// Error
 				Console.WriteLine("Error: Decompress error.");
 				return;
 			}
 
-			// Archive Delete
-			File.Delete(DlPath);
+			// if downloadfile is archive
+			if(DcmpRlt == false) {
+				// Archive Delete
+				File.Delete(DlPath);
+			}
 			// Move
-			MoveBmsFile(DcmpDir);
+			MoveBmsFile(decompress.ExtractPath);
 			return;
 		}
 
